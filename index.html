@@ -6,13 +6,13 @@
   <title>HabitTracker — Dark</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    /* small extra for smooth progress transition */
+  
     .progress-inner { transition: width 450ms ease; }
   </style>
 </head>
 <body class="bg-black text-white antialiased">
 
-  <!-- NAVBAR -->
+  
   <nav class="bg-gray-900 border-b border-gray-800">
     <div class="container mx-auto px-6 py-4 flex items-center justify-between">
       <div class="flex items-center gap-3">
@@ -29,7 +29,7 @@
     </div>
   </nav>
 
-  <!-- HERO -->
+ 
   <header class="py-12">
     <div class="container mx-auto px-6 text-center">
       <h2 class="text-4xl md:text-5xl font-extrabold mb-3">Small habits. Big change.</h2>
@@ -42,7 +42,7 @@
         <a href="#habits" class="inline-block border border-white/10 px-5 py-2 rounded text-gray-300 hover:text-white">View Habits</a>
       </div>
 
-      <!-- Motivational snippets (different sizes & colors, random-looking) -->
+     
       <div class="mt-10 flex flex-wrap justify-center gap-4">
         <span class="text-green-400 text-lg font-semibold">Consistency > Intensity</span>
         <span class="text-pink-400 text-sm">One day at a time.</span>
@@ -55,7 +55,7 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-      <!-- LEFT: Add New Habit + Tips / Motivations -->
+      
       <section id="add" class="order-2 lg:order-1">
         <div class="bg-gray-900 p-6 rounded border border-gray-800">
           <h3 class="text-xl font-semibold mb-3">Add a new habit</h3>
@@ -67,7 +67,7 @@
 
           <p class="text-gray-400 mt-3 text-sm">Tip: keep habit names short and specific.</p>
 
-          <!-- Motivational statements scattered -->
+         
           <div class="mt-6 space-y-2">
             <p class="text-indigo-300 text-sm">Tiny wins stack up into habits.</p>
             <p class="text-gray-300 text-lg font-medium">Start now — not later.</p>
@@ -75,7 +75,7 @@
           </div>
         </div>
 
-        <!-- TIPS CARD -->
+       
         <div id="tips" class="bg-gray-900 p-6 mt-6 rounded border border-gray-800">
           <h4 class="text-lg font-semibold mb-2">Quick Tips</h4>
           <ul class="list-disc list-inside text-gray-300 space-y-1">
@@ -87,7 +87,7 @@
         </div>
       </section>
 
-      <!-- CENTER: Habits list (interactive) -->
+      
       <section id="habits" class="order-1 lg:order-2">
         <div class="bg-gray-900 p-6 rounded border border-gray-800">
           <div class="flex items-start justify-between">
@@ -96,20 +96,20 @@
           </div>
 
           <div id="habitsList" class="mt-4 space-y-4">
-            <!-- JS will inject habit items here -->
+          
           </div>
 
-          <!-- default hint for empty -->
+    
           <p id="emptyHint" class="mt-4 text-gray-500 text-sm hidden">No habits yet. Add one on the left.</p>
         </div>
 
-        <!-- motivational band -->
+        
         <div class="mt-4 bg-gradient-to-r from-white/5 to-white/2 p-4 rounded text-center text-sm text-gray-300">
           <span class="text-yellow-300 font-medium">Keep going — 3 days in a row builds momentum.</span>
         </div>
       </section>
 
-      <!-- RIGHT: Weekly progress summary and big motivators -->
+     
       <aside class="order-3 lg:order-3">
         <div id="progress" class="bg-gray-900 p-6 rounded border border-gray-800">
           <h3 class="text-xl font-semibold mb-3">Session Summary</h3>
@@ -135,15 +135,15 @@
           </div>
         </div>
 
-        <!-- eccentric motivating text (random place) -->
+        
         <div class="mt-6 p-4 rounded border border-gray-800 bg-gray-900 text-center">
           <p class="text-pink-300 text-2xl font-bold">You > Yesterday</p>
           <p class="text-sm text-gray-400 mt-2">One checkmark is one better day.</p>
         </div>
       </aside>
-    </div> <!-- grid -->
+    </div> 
 
-    <!-- FOOTER-LIKE TIPS LINE -->
+
     <div class="mt-10 text-center text-gray-500 text-sm">
       <span class="text-white/80">Pro tip:</span> Consistency beats motivation — protect your streak.
     </div>
@@ -156,13 +156,13 @@
     </div>
   </footer>
 
-  <!-- Minimal JavaScript (handles add/remove/check & localStorage) -->
+  
   <script>
     (() => {
-      // Storage key
+      
       const KEY = 'habittracker_v1';
 
-      // DOM refs
+      
       const habitsList = document.getElementById('habitsList');
       const addForm = document.getElementById('addForm');
       const habitInput = document.getElementById('habitInput');
@@ -171,14 +171,14 @@
       const todayOverall = document.getElementById('todayOverall');
       const todayText = document.getElementById('todayText');
 
-      // default habits
+     
       let habits = [
         { id: Date.now()+1, name: 'Running', done: false },
         { id: Date.now()+2, name: 'Walking', done: false },
         { id: Date.now()+3, name: 'Reading', done: false }
       ];
 
-      // load saved
+      
       function load() {
         try {
           const raw = localStorage.getItem(KEY);
@@ -189,12 +189,12 @@
         } catch(e) { console.warn('load failed', e); }
       }
 
-      // save
+      
       function save() {
         localStorage.setItem(KEY, JSON.stringify(habits));
       }
 
-      // render
+      
       function render() {
         habitsList.innerHTML = '';
         if (habits.length === 0) {
@@ -207,7 +207,7 @@
           const item = document.createElement('div');
           item.className = 'bg-gray-800 p-3 rounded flex flex-col gap-2 border border-gray-700';
 
-          // top row: checkbox, name, remove button
+         
           const top = document.createElement('div');
           top.className = 'flex items-center justify-between gap-3';
 
@@ -219,7 +219,7 @@
           cb.className = 'w-4 h-4 accent-white bg-gray-700 rounded';
           cb.addEventListener('change', () => {
             h.done = cb.checked;
-            // progress bar width
+            
             inner.style.width = h.done ? '100%' : '0%';
             updateSummary();
             save();
@@ -246,7 +246,7 @@
           top.appendChild(left);
           top.appendChild(removeBtn);
 
-          // progress bar
+         
           const barWrap = document.createElement('div');
           barWrap.className = 'w-full bg-gray-700 h-3 rounded overflow-hidden';
           const inner = document.createElement('div');
@@ -255,7 +255,7 @@
 
           barWrap.appendChild(inner);
 
-          // append
+          
           item.appendChild(top);
           item.appendChild(barWrap);
           habitsList.appendChild(item);
@@ -264,41 +264,41 @@
         habitCount.textContent = `${habits.length} habit${habits.length===1?'':'s'}`;
       }
 
-      // update overall summary
+  
       function updateSummary() {
         const total = habits.length;
         const done = habits.filter(h => h.done).length;
         const percent = total === 0 ? 0 : Math.round((done/total)*100);
         todayOverall.style.width = percent + '%';
         todayText.textContent = `${done} / ${total} done`;
-        // update small streak-like indicator (not a real streak calc)
+        
         const streakEl = document.querySelector('#progress .text-emerald-300');
         if (streakEl) streakEl.textContent = `${Math.max(0, done)} days`;
       }
 
-      // add new habit
+   
       addForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const val = (habitInput.value || '').trim();
         if (!val) return;
         const newHabit = { id: Date.now(), name: val, done: false };
-        habits.unshift(newHabit); // newest first
+        habits.unshift(newHabit); 
         habitInput.value = '';
         save();
         render();
         updateSummary();
-        // focus input for fast adding
+      
         habitInput.focus();
       });
 
-      // init
+      
       load();
-      // if no saved, keep defaults; else keep loaded
+      
       if (!localStorage.getItem(KEY)) save();
       render();
       updateSummary();
 
-      // expose for debugging if desired
+     
       window.__habitTracker = { habits, save, render, updateSummary };
 
     })();
