@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>HabitTracker — Dark</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* small extra for smooth progress transition */
+    .progress-inner { transition: width 450ms ease; }
+  </style>
+</head>
+<body class="bg-black text-white antialiased">
+
+  <!-- NAVBAR -->
+  <nav class="bg-gray-900 border-b border-gray-800">
+    <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-white/10 rounded flex items-center justify-center text-white font-bold">HF</div>
+        <h1 class="text-lg font-semibold">HabitTracker</h1>
+      </div>
+
+      <ul class="hidden md:flex items-center gap-6 text-gray-300">
+        <li><a href="#" class="hover:text-white">Home</a></li>
+        <li><a href="#habits" class="hover:text-white">Habits</a></li>
+        <li><a href="#progress" class="hover:text-white">Progress</a></li>
+        <li><a href="#tips" class="hover:text-white">Tips</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="py-12">
+    <div class="container mx-auto px-6 text-center">
+      <h2 class="text-4xl md:text-5xl font-extrabold mb-3">Small habits. Big change.</h2>
+      <p class="text-gray-400 max-w-2xl mx-auto mb-6">
+        Add your daily habits, check them when done — watch the progress bar fill. Keep the streak alive.
+      </p>
+
+      <div class="space-x-3">
+        <a href="#add" class="inline-block bg-white text-black px-5 py-2 rounded hover:bg-gray-300">Add Habit</a>
+        <a href="#habits" class="inline-block border border-white/10 px-5 py-2 rounded text-gray-300 hover:text-white">View Habits</a>
+      </div>
+
+      <!-- Motivational snippets (different sizes & colors, random-looking) -->
+      <div class="mt-10 flex flex-wrap justify-center gap-4">
+        <span class="text-green-400 text-lg font-semibold">Consistency > Intensity</span>
+        <span class="text-pink-400 text-sm">One day at a time.</span>
+        <span class="text-yellow-300 text-xl font-medium">Do it for 1% better.</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container mx-auto px-6 pb-12">
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+      <!-- LEFT: Add New Habit + Tips / Motivations -->
+      <section id="add" class="order-2 lg:order-1">
+        <div class="bg-gray-900 p-6 rounded border border-gray-800">
+          <h3 class="text-xl font-semibold mb-3">Add a new habit</h3>
+
+          <form id="addForm" class="flex gap-2">
+            <input id="habitInput" type="text" placeholder="e.g. Read 30 min" class="flex-1 bg-gray-800 border border-gray-700 px-3 py-2 rounded outline-none" />
+            <button class="bg-white text-black px-4 py-2 rounded hover:bg-gray-200" type="submit">Add</button>
+          </form>
+
+          <p class="text-gray-400 mt-3 text-sm">Tip: keep habit names short and specific.</p>
+
+          <!-- Motivational statements scattered -->
+          <div class="mt-6 space-y-2">
+            <p class="text-indigo-300 text-sm">Tiny wins stack up into habits.</p>
+            <p class="text-gray-300 text-lg font-medium">Start now — not later.</p>
+            <p class="text-rose-400 text-xs">Celebrate 1-day streaks.</p>
+          </div>
+        </div>
+
+        <!-- TIPS CARD -->
+        <div id="tips" class="bg-gray-900 p-6 mt-6 rounded border border-gray-800">
+          <h4 class="text-lg font-semibold mb-2">Quick Tips</h4>
+          <ul class="list-disc list-inside text-gray-300 space-y-1">
+            <li>Attach habit to an existing routine.</li>
+            <li>Make it easy for day 1.</li>
+            <li>Use reminders (phone)</li>
+            <li>Reward yourself weekly.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- CENTER: Habits list (interactive) -->
+      <section id="habits" class="order-1 lg:order-2">
+        <div class="bg-gray-900 p-6 rounded border border-gray-800">
+          <div class="flex items-start justify-between">
+            <h3 class="text-xl font-semibold">Your Habits</h3>
+            <p id="habitCount" class="text-sm text-gray-400 mt-1">0 habits</p>
+          </div>
+
+          <div id="habitsList" class="mt-4 space-y-4">
+            <!-- JS will inject habit items here -->
+          </div>
+
+          <!-- default hint for empty -->
+          <p id="emptyHint" class="mt-4 text-gray-500 text-sm hidden">No habits yet. Add one on the left.</p>
+        </div>
+
+        <!-- motivational band -->
+        <div class="mt-4 bg-gradient-to-r from-white/5 to-white/2 p-4 rounded text-center text-sm text-gray-300">
+          <span class="text-yellow-300 font-medium">Keep going — 3 days in a row builds momentum.</span>
+        </div>
+      </section>
+
+      <!-- RIGHT: Weekly progress summary and big motivators -->
+      <aside class="order-3 lg:order-3">
+        <div id="progress" class="bg-gray-900 p-6 rounded border border-gray-800">
+          <h3 class="text-xl font-semibold mb-3">Session Summary</h3>
+
+          <div class="text-sm text-gray-400 mb-4">
+            Check habits as you complete them. Bars fill to show immediate completion.
+          </div>
+
+          <div class="space-y-3">
+            <div class="bg-gray-800 p-3 rounded">
+              <div class="text-xs text-gray-300 mb-1">Today's Completion</div>
+              <div class="w-full bg-gray-700 h-3 rounded">
+                <div id="todayOverall" class="bg-white h-3 rounded progress-inner" style="width:0%"></div>
+              </div>
+              <div id="todayText" class="mt-2 text-xs text-gray-400">0 / 0 done</div>
+            </div>
+
+            <div class="bg-gray-800 p-3 rounded">
+              <div class="text-xs text-gray-300 mb-1">Active Streak</div>
+              <div class="text-lg font-bold text-emerald-300">0 days</div>
+              <div class="text-xs text-gray-400">Keep it alive — small steps.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- eccentric motivating text (random place) -->
+        <div class="mt-6 p-4 rounded border border-gray-800 bg-gray-900 text-center">
+          <p class="text-pink-300 text-2xl font-bold">You > Yesterday</p>
+          <p class="text-sm text-gray-400 mt-2">One checkmark is one better day.</p>
+        </div>
+      </aside>
+    </div> <!-- grid -->
+
+    <!-- FOOTER-LIKE TIPS LINE -->
+    <div class="mt-10 text-center text-gray-500 text-sm">
+      <span class="text-white/80">Pro tip:</span> Consistency beats motivation — protect your streak.
+    </div>
+
+  </main>
+
+  <footer class="bg-gray-900 border-t border-gray-800">
+    <div class="container mx-auto px-6 py-6 text-center text-gray-400">
+      HabitTracker • Built for demo • <span class="text-gray-300">Dark theme</span>
+    </div>
+  </footer>
+
+  <!-- Minimal JavaScript (handles add/remove/check & localStorage) -->
+  <script>
+    (() => {
+      // Storage key
+      const KEY = 'habittracker_v1';
+
+      // DOM refs
+      const habitsList = document.getElementById('habitsList');
+      const addForm = document.getElementById('addForm');
+      const habitInput = document.getElementById('habitInput');
+      const habitCount = document.getElementById('habitCount');
+      const emptyHint = document.getElementById('emptyHint');
+      const todayOverall = document.getElementById('todayOverall');
+      const todayText = document.getElementById('todayText');
+
+      // default habits
+      let habits = [
+        { id: Date.now()+1, name: 'Running', done: false },
+        { id: Date.now()+2, name: 'Walking', done: false },
+        { id: Date.now()+3, name: 'Reading', done: false }
+      ];
+
+      // load saved
+      function load() {
+        try {
+          const raw = localStorage.getItem(KEY);
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (Array.isArray(parsed)) habits = parsed;
+          }
+        } catch(e) { console.warn('load failed', e); }
+      }
+
+      // save
+      function save() {
+        localStorage.setItem(KEY, JSON.stringify(habits));
+      }
+
+      // render
+      function render() {
+        habitsList.innerHTML = '';
+        if (habits.length === 0) {
+          emptyHint.classList.remove('hidden');
+        } else {
+          emptyHint.classList.add('hidden');
+        }
+
+        habits.forEach(h => {
+          const item = document.createElement('div');
+          item.className = 'bg-gray-800 p-3 rounded flex flex-col gap-2 border border-gray-700';
+
+          // top row: checkbox, name, remove button
+          const top = document.createElement('div');
+          top.className = 'flex items-center justify-between gap-3';
+
+          const left = document.createElement('label');
+          left.className = 'flex items-center gap-3 cursor-pointer';
+          const cb = document.createElement('input');
+          cb.type = 'checkbox';
+          cb.checked = !!h.done;
+          cb.className = 'w-4 h-4 accent-white bg-gray-700 rounded';
+          cb.addEventListener('change', () => {
+            h.done = cb.checked;
+            // progress bar width
+            inner.style.width = h.done ? '100%' : '0%';
+            updateSummary();
+            save();
+          });
+
+          const nameSpan = document.createElement('span');
+          nameSpan.className = 'select-none';
+          nameSpan.textContent = h.name;
+
+          left.appendChild(cb);
+          left.appendChild(nameSpan);
+
+          const removeBtn = document.createElement('button');
+          removeBtn.className = 'text-sm text-rose-400 hover:text-rose-300';
+          removeBtn.title = 'Remove habit';
+          removeBtn.innerHTML = '&#10005;'; // cross
+          removeBtn.addEventListener('click', () => {
+            habits = habits.filter(x => x.id !== h.id);
+            save();
+            render();
+            updateSummary();
+          });
+
+          top.appendChild(left);
+          top.appendChild(removeBtn);
+
+          // progress bar
+          const barWrap = document.createElement('div');
+          barWrap.className = 'w-full bg-gray-700 h-3 rounded overflow-hidden';
+          const inner = document.createElement('div');
+          inner.className = 'bg-white h-3 rounded progress-inner';
+          inner.style.width = h.done ? '100%' : '0%';
+
+          barWrap.appendChild(inner);
+
+          // append
+          item.appendChild(top);
+          item.appendChild(barWrap);
+          habitsList.appendChild(item);
+        });
+
+        habitCount.textContent = `${habits.length} habit${habits.length===1?'':'s'}`;
+      }
+
+      // update overall summary
+      function updateSummary() {
+        const total = habits.length;
+        const done = habits.filter(h => h.done).length;
+        const percent = total === 0 ? 0 : Math.round((done/total)*100);
+        todayOverall.style.width = percent + '%';
+        todayText.textContent = `${done} / ${total} done`;
+        // update small streak-like indicator (not a real streak calc)
+        const streakEl = document.querySelector('#progress .text-emerald-300');
+        if (streakEl) streakEl.textContent = `${Math.max(0, done)} days`;
+      }
+
+      // add new habit
+      addForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const val = (habitInput.value || '').trim();
+        if (!val) return;
+        const newHabit = { id: Date.now(), name: val, done: false };
+        habits.unshift(newHabit); // newest first
+        habitInput.value = '';
+        save();
+        render();
+        updateSummary();
+        // focus input for fast adding
+        habitInput.focus();
+      });
+
+      // init
+      load();
+      // if no saved, keep defaults; else keep loaded
+      if (!localStorage.getItem(KEY)) save();
+      render();
+      updateSummary();
+
+      // expose for debugging if desired
+      window.__habitTracker = { habits, save, render, updateSummary };
+
+    })();
+  </script>
+
+</body>
+</html>
